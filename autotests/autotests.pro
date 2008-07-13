@@ -1,6 +1,7 @@
 TEMPLATE = subdirs
 SUBDIRS  = addbookmarkdialog \
 	autosaver \
+	cookies \
 	downloadmanager \
 	edittreeview \
 	history \
