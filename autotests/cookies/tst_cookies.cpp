@@ -38,10 +38,8 @@ private slots:
     void checkCheckDefaults();
     void checkDefaults();
 
+    void defaultAddAndRetrieve_data();
     void defaultAddAndRetrieve();
-
-private:
-    void testCookie(CookieJar& cjar, const QUrl& url, const QByteArray& cookieString);
 };
 
 void tst_Cookies::initTestCase()
@@ -91,35 +89,35 @@ void tst_Cookies::checkDefaults ()
 }
 
 
-void tst_Cookies::defaultAddAndRetrieve()
+void tst_Cookies::defaultAddAndRetrieve_data()
 {
-//     CookieJar cjar;
-//     QUrl url("http://www.google.de/");
-//     QCOMPARE(cjar.cookiesForUrl(url).size(), 0);
-//     QNetworkCookie newCookie("testname", "testvalue");
-//     QList<QNetworkCookie> newCookies;
-//     newCookies.append(newCookie);
-//     const bool success = cjar.setCookiesFromUrl(newCookies, url);
-//     QCOMPARE(success, true);
-//     QCOMPARE(cjar.cookiesForUrl(url).size(), 1);
-//     //cjar.allCookies().size(), 0);
+    QTest::addColumn<QUrl>("url");
+    QTest::addColumn<QByteArray>("cookieString");
 
-    CookieJar cjar;
-    testCookie(cjar, QUrl("http://www.example.com/"),
-               QByteArray("Set-Cookie:  testkey=testvalue1; expires=Sun, 27-Jul-2008 10:08:54 GMT; Max-Age=1209600; Path=/;"));
-    testCookie(cjar, QUrl("http://testhost/"),
-               QByteArray("Set-Cookie:  testkey=testvalue2; expires=Sun, 27-Jul-2008 10:08:54 GMT; Max-Age=1209600; Path=/;"));
-    // TODO: should for same host but different port be stored separately? What does spec say?
-    testCookie(cjar, QUrl("http://www.example.com:1234/"),
-               QByteArray("Set-Cookie:  testkey=testvalue3; expires=Sun, 27-Jul-2008 10:08:54 GMT; Max-Age=1209600; Path=/;"));
+    QTest::newRow("example.com") << QUrl("http://www.example.com/")
+            << QByteArray("Set-Cookie:  testkey1=testvalue1; expires=Sun, 27-Jul-2008 10:08:54 GMT; Max-Age=1209600; Path=/;");
+    QTest::newRow("testhost") << QUrl("http://testhost/")
+            << QByteArray("Set-Cookie:  testkey2=testvalue2; expires=Sun, 27-Jul-2008 10:08:54 GMT; Max-Age=1209600; Path=/;");
+    QTest::newRow("example.com:1234") << QUrl("http://www.example.com:1234/")
+            << QByteArray("Set-Cookie:  testkey3=testvalue3; expires=Sun, 27-Jul-2008 10:08:54 GMT; Max-Age=1209600; Path=/;");
 }
 
-void tst_Cookies::testCookie(CookieJar& cjar, const QUrl& url, const QByteArray& cookieString)
+void tst_Cookies::defaultAddAndRetrieve()
 {
+    CookieJar cjar;
+
+    QFETCH(QUrl, url);
+    QFETCH(QByteArray, cookieString);
+
+    // check pre-conditions
     QCOMPARE(cjar.cookiesForUrl(url).size(), 0);
+
+    // parse and add cookie
     QList<QNetworkCookie> newCookies = QNetworkCookie::parseCookies(cookieString);
     const bool success = cjar.setCookiesFromUrl(newCookies, url);
     QCOMPARE(success, true);
+
+    // retrieve and check cookie
     QList<QNetworkCookie> retrCookies = cjar.cookiesForUrl(url);
     QCOMPARE(retrCookies.size(), 1);
     QCOMPARE(retrCookies[0].domain(), url.host());
