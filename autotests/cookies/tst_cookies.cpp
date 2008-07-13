@@ -79,11 +79,11 @@ void tst_Cookies::defaultAddAndRetrieve_data()
     QTest::addColumn<QByteArray>("cookieString");
 
     QTest::newRow("example.com") << QUrl("http://www.example.com/")
-            << QByteArray("Set-Cookie:  testkey1=testvalue1; expires=Sun, 27-Jul-2008 10:08:54 GMT; Max-Age=1209600; Path=/;");
+            << QByteArray("Set-Cookie:  testkey1=testvalue1; Max-Age=1209600; Path=/;");
     QTest::newRow("testhost") << QUrl("http://testhost/")
-            << QByteArray("Set-Cookie:  testkey2=testvalue2; expires=Sun, 27-Jul-2008 10:08:54 GMT; Max-Age=1209600; Path=/;");
+            << QByteArray("Set-Cookie:  testkey2=testvalue2; Max-Age=1209600; Path=/;");
     QTest::newRow("example.com:1234") << QUrl("http://www.example.com:1234/")
-            << QByteArray("Set-Cookie:  testkey3=testvalue3; expires=Sun, 27-Jul-2008 10:08:54 GMT; Max-Age=1209600; Path=/;");
+            << QByteArray("Set-Cookie:  testkey3=testvalue3; Max-Age=1209600; Path=/;");
 }
 
 void tst_Cookies::defaultAddAndRetrieve()
