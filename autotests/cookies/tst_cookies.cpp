@@ -19,7 +19,6 @@
  * Boston, MA  02110-1301  USA
  */
 
-// #include <QtGui/QtGui>
 #include <QtTest/QtTest>
 #include "qtest_arora.h"
 #include <cookiejar.h>
@@ -33,8 +32,6 @@ public slots:
     void init();
 
 private slots:
-//     void sometest();
-
     void checkCheckDefaults();
     void checkDefaults();
 
@@ -55,19 +52,6 @@ void tst_Cookies::init()
     QSettings settings;
     settings.clear();
 }
-
-// void tst_Cookies::sometest()
-// {
-//     CookieJar cjar;
-//     QCOMPARE(cjar.blockedCookies().size(), 0);
-// 
-//     cjar.setKeepPolicy(CookieJar::KeepUntilExpire);
-//     QCOMPARE(cjar.keepPolicy(), CookieJar::KeepUntilExpire);
-//     cjar.setKeepPolicy(CookieJar::KeepUntilExit);
-//     QCOMPARE(cjar.keepPolicy(), CookieJar::KeepUntilExit);
-// //     cjar.setKeepPolicy(CookieJar::KeepUntilTimeLimit);
-// //     QCOMPARE(cjar.keepPolicy(), CookieJar::KeepUntilTimeLimit);
-// }
 
 void tst_Cookies::checkCheckDefaults ()
 {
